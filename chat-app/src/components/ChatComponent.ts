@@ -1,7 +1,20 @@
+import { Socket } from 'socket.io';
+
 class ChatComponent {
-    constructor() {
+    private socket: Socket;
+
+    constructor(socket: Socket) {
+        this.socket = socket;
+        this.initialize();
         this.messages = [];
         this.user = null;
+    }
+
+    private initialize() {
+        this.socket.on('message', (msg) => {
+            console.log('message: ' + msg);
+            this.socket.broadcast.emit('message', msg);
+        });
     }
 
     render() {
